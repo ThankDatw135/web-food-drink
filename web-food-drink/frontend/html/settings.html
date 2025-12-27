@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cài đặt - FreshFood</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .settings-container {
+            padding-top: 100px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding-bottom: 4rem;
+        }
+        
+        .settings-card {
+            width: 100%;
+            max-width: 600px;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .settings-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .settings-title {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .back-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .settings-body {
+            padding: 2rem;
+        }
+
+        .section-title {
+            color: #009688;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #ddd;
+            font-size: 0.95rem;
+        }
+
+        .settings-input {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            color: white;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .settings-input:focus {
+            border-color: #009688;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #aaa;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+
+        .toggle-password:hover {
+            color: #009688;
+        }
+
+        .password-requirements {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+
+        .password-requirements ul {
+            margin: 0.5rem 0 0 1.2rem;
+            padding: 0;
+        }
+
+        .password-requirements li {
+            margin: 0.3rem 0;
+        }
+
+        .password-requirements li.valid {
+            color: #4caf50;
+        }
+
+        .password-requirements li.invalid {
+            color: #f44336;
+        }
+
+        .save-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #009688, #00796b);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: 0.3s;
+            margin-top: 1rem;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 150, 136, 0.3);
+        }
+
+        .save-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .alert.success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid #4caf50;
+            color: #4caf50;
+        }
+
+        .alert.error {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid #f44336;
+            color: #f44336;
+        }
+
+        @media (max-width: 768px) {
+            .settings-card {
+                margin: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-globes">
+        <div class="globe globe-1"></div>
+        <div class="globe globe-2"></div>
+    </div>
+    
+    <div class="settings-container">
+        <div class="glass-card settings-card">
+            <div class="settings-header">
+                <h1 class="settings-title">Cài đặt</h1>
+                <a href="/html/index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Quay lại</a>
+            </div>
+
+            <div class="settings-body">
+                <div id="alert" class="alert"></div>
+
+                <div class="section-title">
+                    <i class="fas fa-lock"></i>
+                    Đổi mật khẩu
+                </div>
+
+                <form id="change-password-form">
+                    <div class="form-group">
+                        <label>Mật khẩu hiện tại <span style="color: var(--primary);">*</span></label>
+                        <div class="password-wrapper">
+                            <input type="password" id="current-password" class="settings-input" required>
+                            <button type="button" class="toggle-password" data-target="current-password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Mật khẩu mới <span style="color: var(--primary);">*</span></label>
+                        <div class="password-wrapper">
+                            <input type="password" id="new-password" class="settings-input" required>
+                            <button type="button" class="toggle-password" data-target="new-password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="password-requirements">
+                            Mật khẩu phải có:
+                            <ul id="password-checklist">
+                                <li id="length-check" class="invalid"><i class="fas fa-times"></i> Ít nhất 6 ký tự</li>
+                                <li id="uppercase-check" class="invalid"><i class="fas fa-times"></i> Ít nhất 1 chữ hoa</li>
+                                <li id="lowercase-check" class="invalid"><i class="fas fa-times"></i> Ít nhất 1 chữ thường</li>
+                                <li id="number-check" class="invalid"><i class="fas fa-times"></i> Ít nhất 1 số</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Xác nhận mật khẩu mới <span style="color: var(--primary);">*</span></label>
+                        <div class="password-wrapper">
+                            <input type="password" id="confirm-password" class="settings-input" required>
+                            <button type="button" class="toggle-password" data-target="confirm-password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="save-btn">
+                        <i class="fas fa-save"></i> Lưu thay đổi
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = window.getUser();
+            if (!user) {
+                window.location.href = '/html/login.html';
+                return;
+            }
+
+            // Toggle password visibility
+            document.querySelectorAll('.toggle-password').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const targetId = btn.getAttribute('data-target');
+                    const input = document.getElementById(targetId);
+                    const icon = btn.querySelector('i');
+                    
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        icon.classList.remove('fa-eye');
+                        icon.classList.add('fa-eye-slash');
+                    } else {
+                        input.type = 'password';
+                        icon.classList.remove('fa-eye-slash');
+                        icon.classList.add('fa-eye');
+                    }
+                });
+            });
+
+            // Password validation
+            const newPasswordInput = document.getElementById('new-password');
+            newPasswordInput.addEventListener('input', (e) => {
+                const password = e.target.value;
+                
+                // Length check
+                const lengthCheck = document.getElementById('length-check');
+                if (password.length >= 6) {
+                    lengthCheck.classList.remove('invalid');
+                    lengthCheck.classList.add('valid');
+                    lengthCheck.innerHTML = '<i class="fas fa-check"></i> Ít nhất 6 ký tự';
+                } else {
+                    lengthCheck.classList.remove('valid');
+                    lengthCheck.classList.add('invalid');
+                    lengthCheck.innerHTML = '<i class="fas fa-times"></i> Ít nhất 6 ký tự';
+                }
+
+                // Uppercase check
+                const uppercaseCheck = document.getElementById('uppercase-check');
+                if (/[A-Z]/.test(password)) {
+                    uppercaseCheck.classList.remove('invalid');
+                    uppercaseCheck.classList.add('valid');
+                    uppercaseCheck.innerHTML = '<i class="fas fa-check"></i> Ít nhất 1 chữ hoa';
+                } else {
+                    uppercaseCheck.classList.remove('valid');
+                    uppercaseCheck.classList.add('invalid');
+                    uppercaseCheck.innerHTML = '<i class="fas fa-times"></i> Ít nhất 1 chữ hoa';
+                }
+
+                // Lowercase check
+                const lowercaseCheck = document.getElementById('lowercase-check');
+                if (/[a-z]/.test(password)) {
+                    lowercaseCheck.classList.remove('invalid');
+                    lowercaseCheck.classList.add('valid');
+                    lowercaseCheck.innerHTML = '<i class="fas fa-check"></i> Ít nhất 1 chữ thường';
+                } else {
+                    lowercaseCheck.classList.remove('valid');
+                    lowercaseCheck.classList.add('invalid');
+                    lowercaseCheck.innerHTML = '<i class="fas fa-times"></i> Ít nhất 1 chữ thường';
+                }
+
+                // Number check
+                const numberCheck = document.getElementById('number-check');
+                if (/[0-9]/.test(password)) {
+                    numberCheck.classList.remove('invalid');
+                    numberCheck.classList.add('valid');
+                    numberCheck.innerHTML = '<i class="fas fa-check"></i> Ít nhất 1 số';
+                } else {
+                    numberCheck.classList.remove('valid');
+                    numberCheck.classList.add('invalid');
+                    numberCheck.innerHTML = '<i class="fas fa-times"></i> Ít nhất 1 số';
+                }
+            });
+
+            // Form submission
+            const form = document.getElementById('change-password-form');
+            const alertBox = document.getElementById('alert');
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const currentPassword = document.getElementById('current-password').value;
+                const newPassword = document.getElementById('new-password').value;
+                const confirmPassword = document.getElementById('confirm-password').value;
+
+                // Validate password requirements
+                if (newPassword.length < 6 || !/[A-Z]/.test(newPassword) || 
+                    !/[a-z]/.test(newPassword) || !/[0-9]/.test(newPassword)) {
+                    showAlert('Mật khẩu mới không đáp ứng yêu cầu!', 'error');
+                    return;
+                }
+
+                // Check if passwords match
+                if (newPassword !== confirmPassword) {
+                    showAlert('Mật khẩu xác nhận không khớp!', 'error');
+                    return;
+                }
+
+                // Check if new password is different from current
+                if (currentPassword === newPassword) {
+                    showAlert('Mật khẩu mới phải khác mật khẩu hiện tại!', 'error');
+                    return;
+                }
+
+                const saveBtn = form.querySelector('.save-btn');
+                saveBtn.disabled = true;
+                saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
+
+                try {
+                    const response = await API.put('/users/change-password', {
+                        currentPassword,
+                        newPassword
+                    });
+
+                    if (response && response.message) {
+                        showAlert('Đổi mật khẩu thành công!', 'success');
+                        form.reset();
+                        
+                        // Redirect to login after 2 seconds
+                        setTimeout(() => {
+                            window.logout();
+                        }, 2000);
+                    } else {
+                        showAlert('Có lỗi xảy ra. Vui lòng thử lại!', 'error');
+                    }
+                } catch (error) {
+                    console.error(error);
+                    showAlert(error.message || 'Mật khẩu hiện tại không đúng!', 'error');
+                } finally {
+                    saveBtn.disabled = false;
+                    saveBtn.innerHTML = '<i class="fas fa-save"></i> Lưu thay đổi';
+                }
+            });
+
+            function showAlert(message, type) {
+                alertBox.textContent = message;
+                alertBox.className = `alert ${type}`;
+                alertBox.style.display = 'block';
+                
+                setTimeout(() => {
+                    alertBox.style.display = 'none';
+                }, 5000);
+            }
+        });
+    </script>
+</body>
+</html>

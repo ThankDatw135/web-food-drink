@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông tin cá nhân - FreshFood</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/auth.css"> <!-- Reuse auth styles if needed -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .profile-container {
+            padding-top: 100px; /* Offset for fixed nav */
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding-bottom: 4rem;
+        }
+        
+        .profile-card {
+            width: 100%;
+            max-width: 800px;
+            padding: 0; /* Reset padding for header */
+            overflow: hidden;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .profile-title {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .back-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .profile-body {
+            padding: 2rem;
+        }
+
+        /* Avatar Section */
+        .avatar-section {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .avatar-wrapper {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--primary);
+            background: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .avatar-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-info {
+            flex: 1;
+        }
+
+        .change-avatar-btn {
+            background: #009688; /* Teal color like in example */
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            transition: 0.3s;
+        }
+
+        .change-avatar-btn:hover {
+            background: #00796b;
+        }
+
+        .avatar-note {
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+
+        /* Form Section */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            color: #009688; /* Match example */
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .edit-btn {
+            background: #009688;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-full {
+            grid-column: 1 / -1;
+        }
+
+        .profile-input {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            color: white;
+            outline: none;
+        }
+
+        .profile-input:focus {
+            border-color: #009688;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .profile-input[readonly] {
+            background: rgba(255,255,255,0.02);
+            color: #aaa;
+            cursor: not-allowed;
+        }
+
+        .profile-input option {
+            background: #1e272e;
+            color: white;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #ddd;
+            font-size: 0.95rem;
+        }
+
+        .required {
+            color: var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .avatar-section {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-globes">
+        <div class="globe globe-1"></div>
+        <div class="globe globe-2"></div>
+    </div>
+
+    <!-- Navigation included via JS or static? User wants full page profile usually -->
+    <!-- We'll replicate the layout from image which is a standalone page look -->
+    
+    <div class="profile-container">
+        <div class="glass-card profile-card">
+            <div class="profile-header">
+                <h1 class="profile-title">Thông tin cá nhân</h1>
+                <a href="/html/index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Quay lại</a>
+            </div>
+
+            <div class="profile-body">
+                <!-- Avatar -->
+                <div class="avatar-section">
+                    <div class="avatar-wrapper" id="profile-avatar">
+                        <!-- Initials or Image -->
+                        U
+                    </div>
+                    <div class="avatar-info">
+                        <button class="change-avatar-btn">Thay đổi ảnh đại diện</button>
+                        <div class="avatar-note">JPG, PNG, GIF (tối đa 5MB)</div>
+                    </div>
+                </div>
+
+                <!-- Basic Info -->
+                <div class="section-header">
+                    <div class="section-title">Thông tin cơ bản</div>
+                    <button class="edit-btn"><i class="fas fa-pen"></i> Chỉnh sửa</button>
+                </div>
+
+                <form id="profile-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Họ và tên <span class="required">*</span></label>
+                            <input type="text" id="fullname" class="profile-input" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Ngày tháng năm sinh</label>
+                            <input type="date" id="dob" class="profile-input" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Số điện thoại</label>
+                            <input type="tel" id="phone" class="profile-input" placeholder="0xxxxxxxxx" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Giới tính</label>
+                            <select id="gender" class="profile-input" disabled>
+                                <option value="">-- Chọn giới tính --</option>
+                                <option value="male">Nam</option>
+                                <option value="female">Nữ</option>
+                            </select>
+                        </div>
+                        <div class="form-group form-full">
+                            <label>Email <span class="required">*</span></label>
+                            <input type="email" id="email" class="profile-input" readonly>
+                        </div>
+                        <div class="form-group form-full">
+                            <label>Địa chỉ</label>
+                            <textarea id="address" class="profile-input" rows="3" placeholder="Địa chỉ liên hệ" readonly></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <input type="file" id="avatar-input" accept="image/*" style="display: none;">
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = window.getUser();
+            if (!user) {
+                window.location.href = '/html/login.html';
+                return;
+            }
+
+            // Load profile data from API (to get latest data including phone, dob, etc.)
+            let profileData = {};
+            try {
+                const res = await API.get('/users/profile', {
+                    headers: { 'Authorization': `Bearer ${window.getToken()}` }
+                });
+                if (res) profileData = res;
+            } catch (err) {
+                console.error("Failed to load profile", err);
+            }
+
+            // Map data to fields
+            // Function to safe get value
+            const getVal = (key) => profileData[key] || user[key] || '';
+            
+            document.getElementById('fullname').value = getVal('name');
+            document.getElementById('email').value = getVal('email');
+            document.getElementById('phone').value = getVal('phone');
+            document.getElementById('address').value = getVal('address');
+            document.getElementById('gender').value = getVal('gender');
+            
+            // Format DOB YYYY-MM-DD
+            if (profileData.dob) {
+                const d = new Date(profileData.dob);
+                const isoDate = d.toISOString().split('T')[0];
+                document.getElementById('dob').value = isoDate;
+            }
+
+            // Avatar
+            const avatarImg = document.getElementById('profile-avatar');
+            const currentAvatar = getVal('avatar_url');
+            if (currentAvatar) {
+                avatarImg.innerHTML = `<img src="${currentAvatar}" alt="Avatar">`;
+                avatarImg.style.border = '3px solid var(--primary)';
+            } else if (getVal('name')) {
+                const initials = getVal('name').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                avatarImg.textContent = initials;
+                avatarImg.style.background = '#333';
+            }
+
+            // Logic: Avatar Upload
+            const changeAvatarBtn = document.querySelector('.change-avatar-btn');
+            const avatarInput = document.getElementById('avatar-input');
+
+            changeAvatarBtn.addEventListener('click', () => {
+                avatarInput.click();
+            });
+
+            avatarInput.addEventListener('change', async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                // Validate visual
+                if (file.size > 5 * 1024 * 1024) {
+                    if(window.showToast) {
+                        showToast('File quá lớn! Tối đa 5MB.', 'error');
+                    } else {
+                        alert('File quá lớn! Tối đa 5MB.');
+                    }
+                    return;
+                }
+
+                const formData = new FormData();
+                formData.append('avatar', file);
+
+                // Show loading
+                changeAvatarBtn.textContent = 'Đang tải lên...';
+                changeAvatarBtn.disabled = true;
+
+                try {
+                    const token = window.getToken();
+                    const res = await fetch('/api/users/avatar', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: formData
+                    });
+                    const data = await res.json();
+                    
+                    if (res.ok) {
+                        if (data.avatarUrl) {
+                            // Update Image with timestamp to avoid cache
+                            avatarImg.innerHTML = `<img src="${data.avatarUrl}?t=${new Date().getTime()}" alt="Avatar">`;
+                            
+                            // Update Local Storage / Session Storage
+                            const userStr = localStorage.getItem('user') || sessionStorage.getItem('user');
+                            if (userStr) {
+                                const user = JSON.parse(userStr);
+                                user.avatar_url = data.avatarUrl;
+                                
+                                if (localStorage.getItem('user')) {
+                                    localStorage.setItem('user', JSON.stringify(user));
+                                }
+                                if (sessionStorage.getItem('user')) {
+                                    sessionStorage.setItem('user', JSON.stringify(user));
+                                }
+                                
+                                // Update Header Avatar immediately if exists
+                                const headerAvatar = document.querySelector('.login-btn img');
+                                if(headerAvatar) {
+                                    headerAvatar.src = `${data.avatarUrl}?t=${new Date().getTime()}`;
+                                }
+                            }
+                        }
+                        if(window.showToast) {
+                            showToast('Cập nhật ảnh đại diện thành công!', 'success');
+                        } else {
+                            alert('Cập nhật ảnh đại diện thành công!');
+                        }
+                    } else {
+                        if(window.showToast) {
+                            showToast(data.message || 'Lỗi tải lên avatar', 'error');
+                        } else {
+                            alert(data.message || 'Lỗi tải lên avatar');
+                        }
+                    }
+                } catch (error) {
+                    console.error(error);
+                    if(window.showToast) {
+                        showToast('Lỗi kết nối server', 'error');
+                    } else {
+                        alert('Lỗi kết nối server');
+                    }
+                } finally {
+                    changeAvatarBtn.textContent = 'Thay đổi ảnh đại diện';
+                    changeAvatarBtn.disabled = false;
+                }
+            });
+
+            // Logic: Edit & Save
+            const editBtn = document.querySelector('.edit-btn');
+            const inputs = document.querySelectorAll('.profile-input');
+            let isEditing = false;
+            
+            // Phone validation logic
+            const phoneInput = document.getElementById('phone');
+            phoneInput.addEventListener('input', (e) => {
+                // Remove non-numeric
+                let val = e.target.value.replace(/\D/g, '');
+                // Ensure starts with 0
+                if (val.length > 0 && val[0] !== '0') {
+                    val = '0' + val;
+                }
+                // Limit to 10
+                if (val.length > 10) val = val.substring(0, 10);
+                e.target.value = val;
+            });
+
+            editBtn.addEventListener('click', async () => {
+                if (!isEditing) {
+                    // Start Editing
+                    isEditing = true;
+                    inputs.forEach(input => {
+                        if (input.id !== 'email') { // Email readonly
+                            input.readOnly = false;
+                            input.disabled = false;
+                        }
+                    });
+                    editBtn.innerHTML = '<i class="fas fa-save"></i> Lưu thay đổi';
+                    editBtn.style.background = '#e67eff';
+                    inputs[0].focus();
+                } else {
+                    // Save changes
+                    
+                    // Validate Phone
+                    const phoneVal = phoneInput.value;
+                    if (phoneVal && (phoneVal.length !== 10 || !phoneVal.startsWith('0'))) {
+                        if(window.showToast) {
+                            showToast('Số điện thoại phải bắt đầu bằng 0 và có đủ 10 số!', 'error');
+                        } else {
+                            alert('Số điện thoại phải bắt đầu bằng 0 và có đủ 10 số!');
+                        }
+                        phoneInput.focus();
+                        return;
+                    }
+
+                    // Prepare data
+                    const updateData = {
+                        name: document.getElementById('fullname').value,
+                        phone: phoneVal,
+                        dob: document.getElementById('dob').value,
+                        gender: document.getElementById('gender').value,
+                        address: document.getElementById('address').value
+                    };
+
+                    try {
+                        editBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang lưu...';
+                        
+                        // Call API Put
+                        const res = await API.put('/users/profile', updateData);
+
+                        if (res && (res.message === 'Cập nhật thành công' || res.success)) {
+                            if(window.showToast) {
+                                showToast('Đã lưu thông tin thành công!', 'success');
+                            } else {
+                                alert('Đã lưu thông tin thành công!');
+                            }
+                            
+                            // Update Local Storage
+                            const userStr = localStorage.getItem('user') || sessionStorage.getItem('user');
+                            if (userStr) {
+                                const user = JSON.parse(userStr);
+                                // Update fields
+                                user.name = updateData.name;
+                                user.phone = updateData.phone;
+                                user.dob = updateData.dob;
+                                user.gender = updateData.gender;
+                                user.address = updateData.address;
+                                
+                                if (localStorage.getItem('user')) {
+                                    localStorage.setItem('user', JSON.stringify(user));
+                                }
+                                if (sessionStorage.getItem('user')) {
+                                    sessionStorage.setItem('user', JSON.stringify(user));
+                                }
+                                
+                                // Update Header Name if changed
+                                const loginBtnSpan = document.querySelector('.login-btn span');
+                                if (loginBtnSpan) loginBtnSpan.textContent = user.name;
+                            }
+
+                            // Lock inputs
+                            isEditing = false;
+                            inputs.forEach(input => {
+                                input.readOnly = true;
+                                input.disabled = true;
+                            });
+                            editBtn.innerHTML = '<i class="fas fa-pen"></i> Chỉnh sửa';
+                            editBtn.style.background = '#009688';
+                        } else {
+                           if(window.showToast) {
+                               showToast(res?.message || 'Lỗi lưu thông tin', 'error');
+                           } else {
+                               alert(res?.message || 'Lỗi lưu thông tin');
+                           }
+                           editBtn.innerHTML = '<i class="fas fa-save"></i> Lưu thay đổi';
+                        }
+                    } catch (error) {
+                        console.error(error);
+                        if(window.showToast) {
+                            showToast('Lỗi kết nối server', 'error');
+                        } else {
+                            alert('Lỗi kết nối server');
+                        }
+                        editBtn.innerHTML = '<i class="fas fa-save"></i> Lưu thay đổi';
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  app:
+    build: ./backend
+    container_name: food_beverage_app
+    restart: always
+    ports:
+      - "3005:3000"
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=rootpassword
+      - DB_NAME=food_beverage_db
+      - PORT=3000
+      - JWT_SECRET=toptotalsecrethahaha
+    depends_on:
+      - db
+    volumes:
+      - ./backend:/usr/src/app
+      - ./frontend:/usr/src/frontend
+      - ./uploads:/usr/src/uploads
+      - /usr/src/app/node_modules
+
+  db:
+    image: mysql:8.0
+    container_name: food_beverage_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: food_beverage_db
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  db_data:

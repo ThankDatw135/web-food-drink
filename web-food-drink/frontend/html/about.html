@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Về Chúng Tôi - FreshFood</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .about-hero {
+            padding: 120px 2rem 80px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(255, 71, 87, 0.1), rgba(0, 150, 136, 0.1));
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .about-hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), #009688);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .about-hero p {
+            font-size: 1.2rem;
+            color: #aaa;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .about-section {
+            padding: 80px 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+        }
+
+        .story-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .story-text {
+            color: #ddd;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        .story-text p {
+            margin-bottom: 1.5rem;
+        }
+
+        .story-image {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .story-image img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .value-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .value-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-10px);
+            border-color: var(--primary);
+        }
+
+        .value-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), #009688);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .value-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .value-card p {
+            color: #aaa;
+            line-height: 1.6;
+        }
+
+        .stats-section {
+            background: linear-gradient(135deg, var(--primary), #009688);
+            padding: 60px 2rem;
+            margin: 80px 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .stat-item h2 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-item p {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .mission-vision {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .mission-card, .vision-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mission-card::before, .vision-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), #009688);
+        }
+
+        .mission-card h3, .vision-card h3 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .mission-card p, .vision-card p {
+            color: #ddd;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+            .about-hero h1 {
+                font-size: 2rem;
+            }
+
+            .story-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .mission-vision {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-globes">
+        <div class="globe globe-1"></div>
+        <div class="globe globe-2"></div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="about-hero">
+        <h1>Về FreshFood</h1>
+        <p>Mang đến những món ăn tươi ngon, chất lượng cao với dịch vụ giao hàng nhanh chóng và tận tâm</p>
+    </section>
+
+    <!-- Story Section -->
+    <section class="about-section">
+        <h2 class="section-title">Câu Chuyện Của Chúng Tôi</h2>
+        <div class="story-content">
+            <div class="story-text">
+                <p>
+                    FreshFood được thành lập với niềm đam mê mang đến những món ăn tươi ngon, 
+                    chất lượng cao đến tận tay khách hàng. Chúng tôi hiểu rằng thức ăn không chỉ 
+                    là nguồn dinh dưỡng mà còn là niềm vui, là sự kết nối giữa con người với nhau.
+                </p>
+                <p>
+                    Với đội ngũ đầu bếp tài năng và hệ thống giao hàng chuyên nghiệp, chúng tôi 
+                    cam kết mang đến trải nghiệm ẩm thực tuyệt vời nhất cho mọi khách hàng. 
+                    Mỗi món ăn đều được chế biến từ nguyên liệu tươi ngon, đảm bảo vệ sinh an toàn thực phẩm.
+                </p>
+                <p>
+                    Hành trình của chúng tôi bắt đầu từ một quán ăn nhỏ và giờ đây đã phát triển 
+                    thành một trong những nền tảng giao đồ ăn được yêu thích nhất. Sự tin tưởng 
+                    và ủng hộ của khách hàng chính là động lực để chúng tôi không ngừng phát triển.
+                </p>
+            </div>
+            <div class="story-image">
+                <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80&w=800" alt="FreshFood Story">
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h2>10K+</h2>
+                <p>Khách hàng hài lòng</p>
+            </div>
+            <div class="stat-item">
+                <h2>500+</h2>
+                <p>Món ăn đa dạng</p>
+            </div>
+            <div class="stat-item">
+                <h2>50+</h2>
+                <p>Đối tác nhà hàng</p>
+            </div>
+            <div class="stat-item">
+                <h2>24/7</h2>
+                <p>Phục vụ không ngừng nghỉ</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission & Vision -->
+    <section class="about-section">
+        <h2 class="section-title">Sứ Mệnh & Tầm Nhìn</h2>
+        <div class="mission-vision">
+            <div class="mission-card">
+                <h3><i class="fas fa-bullseye"></i> Sứ Mệnh</h3>
+                <p>
+                    Mang đến trải nghiệm ẩm thực tuyệt vời nhất cho mọi khách hàng thông qua 
+                    những món ăn chất lượng cao, dịch vụ giao hàng nhanh chóng và chăm sóc 
+                    khách hàng tận tâm. Chúng tôi cam kết luôn đặt sự hài lòng của khách hàng 
+                    lên hàng đầu.
+                </p>
+            </div>
+            <div class="vision-card">
+                <h3><i class="fas fa-eye"></i> Tầm Nhìn</h3>
+                <p>
+                    Trở thành nền tảng giao đồ ăn hàng đầu tại Việt Nam, được biết đến với 
+                    chất lượng món ăn tuyệt hảo, dịch vụ chuyên nghiệp và sự đổi mới không ngừng. 
+                    Chúng tôi hướng đến việc kết nối mọi người với những món ăn yêu thích một cách 
+                    dễ dàng và tiện lợi nhất.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="about-section">
+        <h2 class="section-title">Giá Trị Cốt Lõi</h2>
+        <div class="values-grid">
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h3>Chất Lượng</h3>
+                <p>Cam kết sử dụng nguyên liệu tươi ngon, đảm bảo vệ sinh an toàn thực phẩm tuyệt đối</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-shipping-fast"></i>
+                </div>
+                <h3>Nhanh Chóng</h3>
+                <p>Giao hàng nhanh chóng, đúng giờ, đảm bảo món ăn luôn nóng hổi khi đến tay bạn</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Tận Tâm</h3>
+                <p>Đội ngũ chăm sóc khách hàng luôn sẵn sàng hỗ trợ 24/7 với thái độ nhiệt tình</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <h3>Đổi Mới</h3>
+                <p>Không ngừng cải tiến, áp dụng công nghệ mới để mang đến trải nghiệm tốt nhất</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="about-section" style="text-align: center; padding-bottom: 100px;">
+        <div style="background: linear-gradient(135deg, rgba(255, 71, 87, 0.1), rgba(0, 150, 136, 0.1)); padding: 60px 40px; border-radius: 20px; border: 1px solid var(--glass-border);">
+            <h2 style="font-size: 2.5rem; margin-bottom: 1rem; color: white;">Sẵn Sàng Đặt Món?</h2>
+            <p style="font-size: 1.2rem; color: #aaa; margin-bottom: 2rem;">Khám phá hàng trăm món ăn ngon đang chờ bạn</p>
+            <a href="/html/index.html" class="btn-primary ripple" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 1rem 2rem; font-size: 1.1rem; text-decoration: none;">
+                Đặt Ngay <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </section>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        // Add ripple effect
+        document.querySelectorAll('.ripple').forEach(button => {
+            button.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.classList.add('ripple-effect');
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+    </script>
+</body>
+</html>

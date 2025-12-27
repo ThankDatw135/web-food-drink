@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - FreshFood</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 250px;
+            background: rgba(15, 15, 18, 0.95);
+            border-right: 1px solid var(--glass-border);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar .logo {
+            margin-bottom: 3rem;
+            font-size: 1.5rem;
+        }
+        .sidebar a {
+            color: #ccc;
+            text-decoration: none;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+        .sidebar a.active, .sidebar a:hover {
+            background: rgba(255, 71, 87, 0.1);
+            color: var(--primary);
+        }
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            padding: 1.5rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 71, 87, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(255, 71, 87, 0.2);
+        }
+        .stat-title {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        .stat-value {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+            word-wrap: break-word;
+            word-break: break-word;
+            line-height: 1.2;
+            margin-top: 0.5rem;
+        }
+        .stat-icon {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            opacity: 0.2;
+            z-index: 0;
+        }
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .chart-container {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            position: relative;
+        }
+        .chart-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #fff;
+            font-weight: 600;
+        }
+        .chart-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #aaa;
+            font-size: 1rem;
+        }
+        .chart-loading i {
+            font-size: 2rem;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .weekly-charts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        @media (max-width: 1200px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            .weekly-charts {
+                grid-template-columns: 1fr;
+            }
+        }
+        @media (max-width: 768px) {
+            .admin-container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-globes">
+        <div class="globe globe-3" style="top:10%; left:10%"></div>
+    </div>
+
+    <div class="admin-container">
+        <aside class="sidebar">
+            <div class="logo">Admin Panel</div>
+            <a href="index.html" class="active"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="products.html"><i class="fas fa-box"></i> Sản phẩm</a>
+            <a href="orders.html"><i class="fas fa-shopping-bag"></i> Đơn hàng</a>
+            <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+        </aside>
+
+        <main class="main-content">
+            <h1 style="margin-bottom: 2rem;">Tổng Quan</h1>
+            
+            <!-- Statistics Cards -->
+            <div class="stats-grid">
+                <div class="stat-card glass-card">
+                    <i class="fas fa-money-bill-wave stat-icon" style="color: #2ed573;"></i>
+                    <div class="stat-title">Tổng Doanh Thu</div>
+                    <div class="stat-value" style="color: #2ed573;" id="total-revenue">0₫</div>
+                </div>
+                <div class="stat-card glass-card">
+                    <i class="fas fa-calendar-day stat-icon" style="color: #ffa502;"></i>
+                    <div class="stat-title">Doanh Thu Hôm Nay</div>
+                    <div class="stat-value" style="color: #ffa502;" id="daily-revenue">0₫</div>
+                </div>
+                <div class="stat-card glass-card">
+                    <i class="fas fa-box-open stat-icon" style="color: #1e90ff;"></i>
+                    <div class="stat-title">Sản Phẩm Đã Bán Hôm Nay</div>
+                    <div class="stat-value" style="color: #1e90ff;" id="daily-products">0</div>
+                </div>
+                <div class="stat-card glass-card">
+                    <i class="fas fa-shopping-cart stat-icon" style="color: #ff4757;"></i>
+                    <div class="stat-title">Đơn Hàng</div>
+                    <div class="stat-value" style="color: #ff4757;" id="total-orders">0</div>
+                </div>
+                <div class="stat-card glass-card">
+                    <i class="fas fa-boxes stat-icon" style="color: #5f27cd;"></i>
+                    <div class="stat-title">Sản Phẩm</div>
+                    <div class="stat-value" style="color: #5f27cd;" id="total-products">0</div>
+                </div>
+                <div class="stat-card glass-card">
+                    <i class="fas fa-users stat-icon" style="color: #00d2d3;"></i>
+                    <div class="stat-title">Khách Hàng</div>
+                    <div class="stat-value" style="color: #00d2d3;" id="total-customers">0</div>
+                </div>
+            </div>
+
+            <!-- Monthly Revenue Chart -->
+            <div class="chart-container glass-card" style="margin-bottom: 1.5rem;">
+                <h3 class="chart-title">Doanh Thu Theo Tháng (12 tháng gần nhất)</h3>
+                <div class="chart-loading" id="monthly-loading">
+                    <i class="fas fa-spinner"></i>
+                    <div>Đang tải dữ liệu...</div>
+                </div>
+                <canvas id="monthlyRevenueChart" style="max-height: 300px;"></canvas>
+            </div>
+
+            <!-- Weekly Charts Grid -->
+            <div class="weekly-charts">
+                <div class="chart-container glass-card">
+                    <h3 class="chart-title">Doanh Thu Theo Tuần (7 ngày)</h3>
+                    <div class="chart-loading" id="weekly-loading">
+                        <i class="fas fa-spinner"></i>
+                        <div>Đang tải dữ liệu...</div>
+                    </div>
+                    <canvas id="weeklyRevenueChart" style="max-height: 250px;"></canvas>
+                </div>
+                <div class="chart-container glass-card">
+                    <h3 class="chart-title">Phân Bổ Theo Danh Mục</h3>
+                    <div class="chart-loading" id="category-loading">
+                        <i class="fas fa-spinner"></i>
+                        <div>Đang tải dữ liệu...</div>
+                    </div>
+                    <canvas id="categoryChart" style="max-height: 250px;"></canvas>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        // Helper to get user from both storages
+        function getUser() {
+            const userStr = localStorage.getItem('user') || sessionStorage.getItem('user');
+            return userStr ? JSON.parse(userStr) : null;
+        }
+
+        function getToken() {
+            return localStorage.getItem('token') || sessionStorage.getItem('token');
+        }
+
+        // Check authentication
+        const user = getUser();
+        if (!user || user.role !== 'admin') {
+            if(window.showToast) {
+                showToast('Bạn không có quyền truy cập!', 'error');
+            } else {
+                alert('Bạn không có quyền truy cập!');
+            }
+            setTimeout(() => window.location.href = '/admin/login.html', 1000);
+        }
+
+        function logout() {
+            localStorage.clear();
+            sessionStorage.clear();
+            window.location.href = '/admin/login.html';
+        }
+
+        // Format currency
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND'
+            }).format(amount);
+        }
+
+        // Format month label
+        function formatMonth(monthStr) {
+            const [year, month] = monthStr.split('-');
+            return `T${parseInt(month)}/${year}`;
+        }
+
+        // Format day label
+        function formatDay(dayStr) {
+            const date = new Date(dayStr);
+            const days = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+            return days[date.getDay()];
+        }
+
+        // Load dashboard data
+        async function loadDashboard() {
+            try {
+                const token = getToken();
+                const headers = { 'Authorization': `Bearer ${token}` };
+
+                // Load statistics with animation
+                const stats = await API.get('/admin/stats', { headers });
+                if (stats) {
+                    animateValue('total-revenue', 0, stats.totalRevenue, 1000, formatCurrency);
+                    animateValue('daily-revenue', 0, stats.dailyRevenue, 1000, formatCurrency);
+                    animateValue('daily-products', 0, stats.dailyProductsSold, 1000);
+                    animateValue('total-orders', 0, stats.totalOrders, 1000);
+                    animateValue('total-products', 0, stats.totalProducts, 1000);
+                    animateValue('total-customers', 0, stats.totalCustomers, 1000);
+                }
+
+                // Load monthly revenue
+                const monthlyData = await API.get('/admin/revenue/monthly', { headers });
+                if (monthlyData && monthlyData.length > 0) {
+                    document.getElementById('monthly-loading').style.display = 'none';
+                    createMonthlyChart(monthlyData);
+                } else {
+                    document.getElementById('monthly-loading').innerHTML = '<div style="color: #aaa;">Chưa có dữ liệu</div>';
+                }
+
+                // Load weekly revenue
+                const weeklyData = await API.get('/admin/revenue/weekly', { headers });
+                if (weeklyData && weeklyData.length > 0) {
+                    document.getElementById('weekly-loading').style.display = 'none';
+                    createWeeklyChart(weeklyData);
+                } else {
+                    document.getElementById('weekly-loading').innerHTML = '<div style="color: #aaa;">Chưa có dữ liệu</div>';
+                }
+
+                // Load category distribution
+                const categoryData = await API.get('/admin/categories/distribution', { headers });
+                if (categoryData && categoryData.length > 0) {
+                    document.getElementById('category-loading').style.display = 'none';
+                    createCategoryChart(categoryData);
+                } else {
+                    document.getElementById('category-loading').innerHTML = '<div style="color: #aaa;">Chưa có dữ liệu</div>';
+                }
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                // Hide loading indicators
+                ['monthly-loading', 'weekly-loading', 'category-loading'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.innerHTML = '<div style="color: #ff4757;">Lỗi tải dữ liệu</div>';
+                });
+                if(window.showToast) {
+                    showToast('Lỗi khi tải dữ liệu dashboard', 'error');
+                } else {
+                    alert('Lỗi khi tải dữ liệu dashboard');
+                }
+            }
+        }
+
+        // Animate number counter
+        function animateValue(id, start, end, duration, formatter = null) {
+            const element = document.getElementById(id);
+            if (!element) return;
+            
+            const range = end - start;
+            const startTime = performance.now();
+            
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+                const current = start + (range * easeOutQuart);
+                
+                element.textContent = formatter ? formatter(Math.floor(current)) : Math.floor(current);
+                
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                } else {
+                    element.textContent = formatter ? formatter(end) : end;
+                }
+            }
+            
+            requestAnimationFrame(update);
+        }
+
+        // Create monthly revenue chart
+        function createMonthlyChart(data) {
+            const ctx = document.getElementById('monthlyRevenueChart');
+            if (!ctx) return;
+            
+            new Chart(ctx.getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: data.map(d => formatMonth(d.month)),
+                    datasets: [{
+                        label: 'Doanh thu (VNĐ)',
+                        data: data.map(d => d.revenue),
+                        borderColor: '#ff4757',
+                        backgroundColor: 'rgba(255, 71, 87, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        pointBackgroundColor: '#ff4757',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        legend: { 
+                            labels: { 
+                                color: 'white',
+                                font: {
+                                    family: 'Inter',
+                                    size: 12
+                                }
+                            } 
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleFont: {
+                                family: 'Inter',
+                                size: 14
+                            },
+                            bodyFont: {
+                                family: 'Inter',
+                                size: 13
+                            },
+                            padding: 12,
+                            callbacks: {
+                                label: (context) => 'Doanh thu: ' + formatCurrency(context.parsed.y)
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { 
+                            ticks: { 
+                                color: '#aaa',
+                                font: {
+                                    family: 'Inter',
+                                    size: 11
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)'
+                            }
+                        },
+                        y: { 
+                            ticks: { 
+                                color: '#aaa',
+                                font: {
+                                    family: 'Inter',
+                                    size: 11
+                                },
+                                callback: (value) => formatCurrency(value)
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Create weekly revenue chart
+        function createWeeklyChart(data) {
+            const ctx = document.getElementById('weeklyRevenueChart');
+            if (!ctx) return;
+            
+            new Chart(ctx.getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: data.map(d => formatDay(d.day)),
+                    datasets: [{
+                        label: 'Doanh thu (VNĐ)',
+                        data: data.map(d => d.revenue),
+                        backgroundColor: 'rgba(30, 144, 255, 0.8)',
+                        borderColor: '#1e90ff',
+                        borderWidth: 1,
+                        borderRadius: 8,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { 
+                            labels: { 
+                                color: 'white',
+                                font: {
+                                    family: 'Inter',
+                                    size: 12
+                                }
+                            } 
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleFont: {
+                                family: 'Inter',
+                                size: 14
+                            },
+                            bodyFont: {
+                                family: 'Inter',
+                                size: 13
+                            },
+                            padding: 12,
+                            callbacks: {
+                                label: (context) => 'Doanh thu: ' + formatCurrency(context.parsed.y)
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { 
+                            ticks: { 
+                                color: '#aaa',
+                                font: {
+                                    family: 'Inter',
+                                    size: 11
+                                }
+                            },
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: { 
+                            ticks: { 
+                                color: '#aaa',
+                                font: {
+                                    family: 'Inter',
+                                    size: 11
+                                },
+                                callback: (value) => formatCurrency(value)
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Create category distribution chart
+        function createCategoryChart(data) {
+            const ctx = document.getElementById('categoryChart');
+            if (!ctx) return;
+            
+            // Filter out categories with 0 revenue
+            const filteredData = data.filter(d => d.revenue > 0);
+            
+            if (filteredData.length === 0) {
+                // Show message if no data
+                const context = ctx.getContext('2d');
+                context.font = '16px Inter';
+                context.fillStyle = '#aaa';
+                context.textAlign = 'center';
+                context.fillText('Chưa có dữ liệu', ctx.width / 2, ctx.height / 2);
+                return;
+            }
+
+            const colors = [
+                '#ff4757', '#2ed573', '#1e90ff', '#ffa502', 
+                '#ff6348', '#70a1ff', '#5f27cd', '#00d2d3'
+            ];
+
+            new Chart(ctx.getContext('2d'), {
+                type: 'pie',
+                data: {
+                    labels: filteredData.map(d => d.category),
+                    datasets: [{
+                        data: filteredData.map(d => d.revenue),
+                        backgroundColor: colors.slice(0, filteredData.length),
+                        borderColor: '#1e272e',
+                        borderWidth: 2,
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { 
+                            labels: { 
+                                color: 'white',
+                                font: {
+                                    family: 'Inter',
+                                    size: 12
+                                },
+                                padding: 15
+                            },
+                            position: 'bottom'
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleFont: {
+                                family: 'Inter',
+                                size: 14
+                            },
+                            bodyFont: {
+                                family: 'Inter',
+                                size: 13
+                            },
+                            padding: 12,
+                            callbacks: {
+                                label: (context) => {
+                                    const label = context.label || '';
+                                    const value = formatCurrency(context.parsed);
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((context.parsed / total) * 100).toFixed(1);
+                                    return `${label}: ${value} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Load dashboard on page load
+        loadDashboard();
+    </script>
+</body>
+</html>

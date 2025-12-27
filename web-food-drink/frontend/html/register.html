@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Ký - FreshFood</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/auth.css">
+</head>
+<body>
+    <div class="background-globes">
+        <div class="globe globe-1"></div>
+        <div class="globe globe-3"></div>
+    </div>
+
+    <div class="auth-container">
+        <div class="glass-card auth-card">
+            <h2 class="auth-title">Đăng Ký</h2>
+            <form id="register-form">
+                <div class="form-group">
+                    <label>Họ tên</label>
+                    <input type="text" id="name" class="auth-input" placeholder="Nguyễn Văn A" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="email" class="auth-input" placeholder="nhap@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Mật khẩu</label>
+                    <input type="password" id="password" class="auth-input" placeholder="••••••" required>
+                </div>
+                <button type="submit" class="btn-primary auth-btn ripple">Đăng Ký</button>
+            </form>
+
+            <div class="auth-footer">
+                Đã có tài khoản? <a href="/html/login.html">Đăng nhập</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+</body>
+</html>

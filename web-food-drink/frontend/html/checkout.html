@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh Toán - FreshFood</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .checkout-container {
+            padding: 8rem 5% 4rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .form-section {
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        .checkout-input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: white;
+            outline: none;
+        }
+        .payment-methods {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .payment-method {
+            flex: 1;
+            padding: 1rem;
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.3s;
+            background: rgba(255,255,255,0.05);
+        }
+        .payment-method.active, .payment-method:hover {
+            border-color: var(--primary);
+            background: rgba(255, 71, 87, 0.1);
+        }
+        .hidden-radio {
+            display: none;
+        }
+        .order-summary {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--glass-border);
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-globes">
+        <div class="globe globe-1" style="top:50%; left:10%"></div>
+    </div>
+
+    <nav class="glass-nav">
+        <div class="logo">
+            <i class="fas fa-utensils"></i> FreshFood
+        </div>
+        <div class="nav-links">
+            <a href="/html/cart.html">Quay lại giỏ hàng</a>
+        </div>
+    </nav>
+
+    <div class="checkout-container">
+        <h1 style="margin-bottom: 2rem; text-align: center;">Thông Tin Thanh Toán</h1>
+        
+        <form id="checkout-form">
+            <div class="glass-card form-section">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h3 style="margin: 0;">Thông Tin Giao Hàng</h3>
+                    <button type="button" id="edit-btn" class="btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
+                        <i class="fas fa-edit"></i> Chỉnh sửa
+                    </button>
+                </div>
+                <div class="form-group">
+                    <label>Họ tên người nhận</label>
+                    <input type="text" id="name" class="checkout-input" required disabled>
+                </div>
+                <div class="form-group">
+                    <label>Số điện thoại</label>
+                    <input type="tel" id="phone" class="checkout-input" required disabled>
+                </div>
+                <div class="form-group">
+                    <label>Địa chỉ giao hàng</label>
+                    <textarea id="address" class="checkout-input" rows="3" required disabled></textarea>
+                </div>
+            </div>
+
+            <div class="glass-card form-section">
+                <h3 style="margin-bottom: 1.5rem;">Phương Thức Thanh Toán</h3>
+                <div class="payment-methods">
+                    <label class="payment-method active">
+                        <input type="radio" name="payment" value="cod" class="hidden-radio" checked>
+                        <i class="fas fa-money-bill-wave" style="font-size: 1.5rem; margin-bottom: 0.5rem; display:block;"></i>
+                        Thanh toán khi nhận hàng (COD)
+                    </label>
+                    <label class="payment-method">
+                        <input type="radio" name="payment" value="banking" class="hidden-radio">
+                        <i class="fas fa-university" style="font-size: 1.5rem; margin-bottom: 0.5rem; display:block;"></i>
+                        Chuyển khoản ngân hàng
+                    </label>
+                </div>
+            </div>
+
+            <div class="order-summary" style="text-align: center;">
+                 <button type="submit" class="btn-primary ripple" style="max-width: 400px; width: 100%; padding: 1.2rem; font-size: 1.2rem; margin: 0 auto; display: block;">Xác Nhận Đặt Hàng</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Kiểm tra token từ cả localStorage và sessionStorage
+            const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+            if (!token) {
+                window.location.href = '/html/login.html';
+                return;
+            }
+
+            // Payment method selection UI
+            const methods = document.querySelectorAll('.payment-method');
+            methods.forEach(m => {
+                m.addEventListener('click', () => {
+                    methods.forEach(om => om.classList.remove('active'));
+                    m.classList.add('active');
+                    m.querySelector('input').checked = true;
+                });
+            });
+
+            // Load thông tin user từ API
+            async function loadUserProfile() {
+                try {
+                    const res = await fetch('/api/users/profile', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    
+                    if (res.ok) {
+                        const user = await res.json();
+                        // Điền thông tin vào form
+                        if(user.name) document.getElementById('name').value = user.name;
+                        if(user.phone) document.getElementById('phone').value = user.phone;
+                        if(user.address) document.getElementById('address').value = user.address;
+                    }
+                } catch (error) {
+                    console.error('Lỗi khi tải thông tin user:', error);
+                }
+            }
+            
+            // Load thông tin khi vào trang
+            await loadUserProfile();
+
+            // Edit button functionality
+            const editBtn = document.getElementById('edit-btn');
+            const nameInput = document.getElementById('name');
+            const phoneInput = document.getElementById('phone');
+            const addressInput = document.getElementById('address');
+            let isEditing = false;
+
+            editBtn.addEventListener('click', async () => {
+                if(isEditing) {
+                    // Đang ở chế độ edit -> Lưu thông tin
+                    const updatedData = {
+                        name: nameInput.value,
+                        phone: phoneInput.value,
+                        address: addressInput.value
+                    };
+                    
+                    try {
+                        const res = await fetch('/api/users/profile', {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}`
+                            },
+                            body: JSON.stringify(updatedData)
+                        });
+                        
+                        if (res.ok) {
+                            if(window.showToast) {
+                                showToast('Lưu thông tin thành công!', 'success');
+                            } else {
+                                alert('Lưu thông tin thành công!');
+                            }
+                            // Disable inputs
+                            nameInput.disabled = true;
+                            phoneInput.disabled = true;
+                            addressInput.disabled = true;
+                            isEditing = false;
+                            editBtn.innerHTML = '<i class="fas fa-edit"></i> Chỉnh sửa';
+                            editBtn.style.background = 'var(--primary)';
+                        } else {
+                            const result = await res.json();
+                            if(window.showToast) {
+                                showToast(result.message || 'Lỗi khi lưu thông tin', 'error');
+                            } else {
+                                alert(result.message || 'Lỗi khi lưu thông tin');
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error saving profile:', error);
+                        if(window.showToast) {
+                            showToast('Lỗi kết nối server', 'error');
+                        } else {
+                            alert('Lỗi kết nối server');
+                        }
+                    }
+                } else {
+                    // Chuyển sang chế độ edit
+                    isEditing = true;
+                    nameInput.disabled = false;
+                    phoneInput.disabled = false;
+                    addressInput.disabled = false;
+                    editBtn.innerHTML = '<i class="fas fa-save"></i> Lưu';
+                    editBtn.style.background = 'var(--secondary)';
+                }
+            });
+
+            // Handle Submit
+            document.getElementById('checkout-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                // Lấy giỏ hàng từ localStorage
+                const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+                
+                if (cart.length === 0) {
+                    if(window.showToast) {
+                        showToast('Giỏ hàng trống!', 'error');
+                    } else {
+                        alert('Giỏ hàng trống!');
+                    }
+                    return;
+                }
+                
+                const data = {
+                    recipientName: document.getElementById('name').value,
+                    recipientPhone: document.getElementById('phone').value,
+                    recipientAddress: document.getElementById('address').value,
+                    paymentMethod: document.querySelector('input[name="payment"]:checked').value,
+                    items: cart.map(item => ({
+                        productId: item.id,
+                        quantity: item.quantity,
+                        price: item.price
+                    }))
+                };
+
+                // Simulate Banking Modal if chosen
+                if (data.paymentMethod === 'banking') {
+                    if(window.showConfirm) {
+                        showConfirm('Bạn đã chọn chuyển khoản. Vui lòng chuyển khoản tới STK: 123456789 (Vietcombank) - Nội dung: Tên_SĐT.', async () => {
+                            await submitOrder(data);
+                        });
+                        return;
+                    } else {
+                        if (!confirm('Bạn đã chọn chuyển khoản. Vui lòng chuyển khoản tới STK: 123456789 (Vietcombank) - Nội dung: Tên_SĐT. Bấm OK để xác nhận đã chuyển.')) {
+                            return;
+                        }
+                    }
+                }
+                
+                await submitOrder(data);
+            });
+            
+            async function submitOrder(data) {
+                try {
+                    const res = await fetch('/api/orders', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    const result = await res.json();
+                    
+                    if (res.ok) {
+                        // Xóa giỏ hàng sau khi đặt hàng thành công
+                        localStorage.removeItem('cart');
+                        
+                        if(window.showToast) {
+                            showToast('Đặt hàng thành công! Mã đơn: ' + (result.orderId || result.id), 'success');
+                        } else {
+                            alert('Đặt hàng thành công! Mã đơn: ' + (result.orderId || result.id));
+                        }
+                        setTimeout(() => window.location.href = '/html/index.html', 1500);
+                    } else {
+                        if(window.showToast) {
+                            showToast(result.message || 'Lỗi đặt hàng', 'error');
+                        } else {
+                            alert(result.message || 'Lỗi đặt hàng');
+                        }
+                    }
+                } catch (error) {
+                    console.error('Order error:', error);
+                    if(window.showToast) {
+                        showToast('Lỗi kết nối server', 'error');
+                    } else {
+                        alert('Lỗi kết nối');
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giỏ Hàng - FreshFood</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .cart-container {
+            padding: 8rem 5% 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .cart-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .cart-table th {
+            text-align: left;
+            padding: 1rem;
+            border-bottom: 1px solid var(--glass-border);
+            color: #aaa;
+            font-weight: 500;
+        }
+        .cart-table td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            vertical-align: middle;
+        }
+        .cart-item-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .cart-item-info img {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+        .qty-input {
+            width: 60px;
+            padding: 0.5rem;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--glass-border);
+            color: white;
+            border-radius: 8px;
+            outline: none;
+            text-align: center;
+        }
+        .summary-card {
+            padding: 2rem;
+            height: fit-content;
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            color: #ccc;
+        }
+        .summary-total {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--glass-border);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .checkout-btn {
+            width: 100%;
+            max-width: 280px;
+            padding: 1rem;
+            margin: 2rem auto 0 auto;
+            font-size: 1.1rem;
+            display: block;
+        }
+        .remove-btn {
+            color: #ff4757;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 1.1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .cart-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-globes">
+        <div class="globe globe-2" style="top:20%; left:80%"></div>
+        <div class="globe globe-3" style="bottom:10%; right:80%"></div>
+    </div>
+
+    <!-- Nav Reuse (Should adhere to DRY but coping for MPA simplicity) -->
+    <nav class="glass-nav">
+        <div class="logo">
+            <i class="fas fa-utensils"></i> FreshFood
+        </div>
+        <div class="nav-links">
+            <a href="/html/index.html">Trang chủ</a>
+            <a href="/html/index.html#menu">Thực đơn</a>
+            <a href="/html/cart.html" class="active">Giỏ hàng</a>
+        </div>
+        <div class="nav-actions">
+           <a href="/html/login.html" class="login-btn">Đăng nhập</a>
+        </div>
+    </nav>
+
+    <div class="cart-container">
+        <h1 style="margin-bottom: 2rem;">Giỏ Hàng Của Bạn</h1>
+        
+        <div id="cart-content" class="cart-grid">
+            <div class="glass-card" style="padding: 0;">
+                <table class="cart-table">
+                    <thead>
+                        <tr>
+                            <th>Sản phẩm</th>
+                            <th>Giá</th>
+                            <th>Số lượng</th>
+                            <th>Tổng</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="cart-items-body">
+                        <!-- Items rendered here -->
+                    </tbody>
+                </table>
+                <div id="empty-cart-msg" style="padding: 2rem; text-align: center; display: none;">
+                    Giỏ hàng đang trống. <a href="/html/index.html" style="color: var(--primary);">Mua sắm ngay</a>
+                </div>
+            </div>
+
+            <div class="glass-card summary-card">
+                <h3 style="margin-bottom: 1.5rem;">Tóm Tắt Đơn Hàng</h3>
+                <div class="summary-row">
+                    <span>Tạm tính</span>
+                    <span id="subtotal">0đ</span>
+                </div>
+                <div class="summary-row">
+                    <span>Phí giao hàng</span>
+                    <span>30.000đ</span>
+                </div>
+                <div class="summary-row summary-total">
+                    <span>Tổng cộng</span>
+                    <span id="total-price">0đ</span>
+                </div>
+                <button class="btn-primary checkout-btn ripple" onclick="window.location.href='/html/checkout.html'">Thanh Toán Ngay</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/cart.js"></script>
+</body>
+</html>

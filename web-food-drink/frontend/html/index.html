@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Food & Beverage Store</title>
+    <!-- Modern Font: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="background-globes">
+      <div class="globe globe-1"></div>
+      <div class="globe globe-2"></div>
+      <div class="globe globe-3"></div>
+    </div>
+
+    <nav class="glass-nav">
+      <div class="logo"><i class="fas fa-utensils"></i> FreshFood</div>
+      <div class="nav-links">
+        <a href="/html/index.html" class="active">Trang chủ</a>
+        <a href="#menu">Thực đơn</a>
+        <a href="/html/about.html">Về chúng tôi</a>
+      </div>
+      <div class="nav-actions">
+        <div class="search-box">
+          <input type="text" placeholder="Tìm kiếm món ăn..." />
+          <i class="fas fa-search"></i>
+        </div>
+        <a href="/html/cart.html" class="cart-btn">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="badge">0</span>
+        </a>
+        <a href="/html/login.html" class="login-btn">Đăng nhập</a>
+      </div>
+    </nav>
+
+    <main>
+      <section class="hero glass-card">
+        <div class="hero-content">
+          <h1>
+            Thưởng thức ẩm thực <br /><span class="gradient-text"
+              >Tinh tế & Đẳng cấp</span
+            >
+          </h1>
+          <p>
+            Đặt món ăn yêu thích của bạn ngay hôm nay, giao hàng nhanh chóng,
+            hương vị tuyệt hảo.
+          </p>
+          <button class="btn-primary ripple">
+            Đặt Ngay <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+        <div class="hero-image">
+          <img
+            src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80&w=1000"
+            alt="Delicious Food"
+            loading="lazy"
+          />
+        </div>
+      </section>
+
+      <section id="menu" class="product-section">
+        <h2 class="section-title">Món Ngon Nổi Bật</h2>
+        <div class="categories">
+          <button class="cat-btn active">Tất cả</button>
+          <button class="cat-btn">Đồ ăn</button>
+          <button class="cat-btn">Đồ uống</button>
+        </div>
+
+        <div id="product-list" class="product-grid">
+          <!-- Products will be loaded via JS -->
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+        </div>
+      </section>
+    </main>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/main.js"></script>
+  </body>
+</html>
