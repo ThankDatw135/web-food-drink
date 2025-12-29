@@ -15,31 +15,35 @@ Website thương mại điện tử F&B hiện đại, bảo mật, chạy trên
 
 ### 👥 Người Dùng
 
-- ✅ **Xác thực đa dạng**: Đăng ký/Đăng nhập với JWT Authentication hoặc Google OAuth
-- ✅ **Quản lý hồ sơ**: Upload và cập nhật avatar cá nhân
-- ✅ Tìm kiếm sản phẩm **Real-time** (tự động lọc khi gõ)
+- ✅ **Xác thực**: Đăng ký/Đăng nhập với JWT Authentication
+- ✅ **Quản lý hồ sơ**: Upload và cập nhật avatar cá nhân, chỉnh sửa thông tin
+- ✅ **Đổi mật khẩu**: Thay đổi mật khẩu với validation mạnh mẽ
+- ✅ Tìm kiếm sản phẩm **Real-time** với debounce (500ms)
+- ✅ **Lọc theo danh mục**: Tất cả, Đồ ăn, Đồ uống
+- ✅ **Phân trang**: Homepage với 20 sản phẩm/trang
 - ✅ Thêm vào giỏ hàng với **Toast Notifications** đẹp mắt
-- ✅ Thanh toán COD với thông tin giao hàng
+- ✅ **Giỏ hàng**: Quản lý số lượng, xóa sản phẩm, badge hiển thị tổng số
+- ✅ **Thanh toán**: Trang checkout riêng với thông tin giao hàng
 - ✅ **Lịch sử đơn hàng**: Xem danh sách đơn hàng với phân trang, mỗi user có số thứ tự đơn hàng riêng
-- ✅ **Lịch sử hoạt động**: Theo dõi các hoạt động cá nhân với phân trang
+- ✅ **Về chúng tôi**: Trang giới thiệu về FreshFood với câu chuyện, sứ mệnh, giá trị cốt lõi
 
 ### 🔐 Quản Trị Viên
 
 - ✅ Trang đăng nhập Admin riêng biệt với bảo mật cao
-- ✅ **Dashboard**: Biểu đồ doanh thu và thống kê chi tiết (Chart.js)
-- ✅ **Quản lý sản phẩm**: CRUD với Image Preview và phân trang
+- ✅ **Dashboard**: Biểu đồ doanh thu theo tuần/tháng và thống kê chi tiết (Chart.js)
+- ✅ **Thống kê**: Tổng doanh thu, đơn hàng, sản phẩm, phân bố theo danh mục
+- ✅ **Quản lý sản phẩm**: CRUD với Image Preview, phân trang, tìm kiếm và lọc
 - ✅ **Quản lý đơn hàng**: Xem, cập nhật trạng thái đơn hàng với phân trang
 - ✅ **Upload ảnh**: Hỗ trợ upload ảnh sản phẩm và avatar (Multer)
-- ✅ **Lọc và tìm kiếm**: Tìm kiếm sản phẩm, lọc theo trạng thái
 
 ### 🔥 Công Nghệ Nổi Bật
 
-- ✅ **Phân trang thông minh**: Pagination cho tất cả danh sách (sản phẩm, đơn hàng, lịch sử)
+- ✅ **Phân trang thông minh**: Pagination cho tất cả danh sách (sản phẩm, đơn hàng)
 - ✅ **Số thứ tự đơn hàng theo user**: Mỗi người dùng có hệ thống đánh số đơn hàng riêng
 - ✅ **Glassmorphism UI**: Hiệu ứng blur, gradient, animations mượt mà
 - ✅ **Dockerized**: Triển khai 1 lệnh, chạy mọi nơi
 - ✅ **Responsive Design**: Tối ưu cho mọi thiết bị
-- ✅ **Email OTP**: Hệ thống gửi OTP qua email cho reset mật khẩu
+- ✅ **LocalStorage Cart**: Giỏ hàng được lưu local, đồng bộ với backend
 
 ---
 
@@ -75,7 +79,7 @@ Website thương mại điện tử F&B hiện đại, bảo mật, chạy trên
 
 ```bash
 git clone <repository-url>
-cd webbandoannuocuong
+cd web-food-drink
 ```
 
 ### Bước 2: Build & Run Docker
@@ -105,8 +109,11 @@ Tài khoản mặc định:
 | **Đăng Ký**          | `http://localhost:3005/html/register.html`  | Tạo tài khoản mới            |
 | **Đăng Nhập**        | `http://localhost:3005/html/login.html`     | Đăng nhập khách hàng         |
 | **Hồ Sơ**            | `http://localhost:3005/html/profile.html`   | Quản lý thông tin cá nhân    |
+| **Cài Đặt**          | `http://localhost:3005/html/settings.html`  | Đổi mật khẩu, cài đặt        |
 | **Giỏ Hàng**         | `http://localhost:3005/html/cart.html`      | Xem & quản lý giỏ hàng       |
+| **Thanh Toán**       | `http://localhost:3005/html/checkout.html`  | Trang thanh toán             |
 | **Lịch Sử Đơn**      | `http://localhost:3005/html/history.html`   | Xem lịch sử đơn hàng         |
+| **Về Chúng Tôi**     | `http://localhost:3005/html/about.html`     | Giới thiệu về FreshFood      |
 | **Admin Login**      | `http://localhost:3005/admin/login.html`    | Đăng nhập quản trị           |
 | **Admin Dashboard**  | `http://localhost:3005/admin/index.html`    | Bảng điều khiển              |
 | **Quản Lý Sản Phẩm** | `http://localhost:3005/admin/products.html` | CRUD sản phẩm                |
@@ -123,69 +130,89 @@ Tài khoản mặc định:
 ### 🔧 Quản Lý Admin
 
 1. Đăng nhập tại `/admin/login.html`
-2. **Dashboard**: Xem thống kê doanh thu và biểu đồ
+2. **Dashboard**: Xem thống kê doanh thu theo tuần/tháng, biểu đồ, phân bố danh mục
 3. **Products**:
    - Thêm món mới (có preview ảnh)
    - Sửa/Xóa sản phẩm
-   - Upload ảnh → lưu vào `uploads/`
+   - Upload ảnh → lưu vào `uploads/images/`
    - Phân trang và tìm kiếm sản phẩm
 4. **Orders**:
    - Xem danh sách đơn hàng với phân trang
-   - Cập nhật trạng thái đơn hàng
-   - Xem chi tiết từng đơn hàng
+   - Cập nhật trạng thái đơn hàng (pending, paid, delivered, cancelled)
+   - Xem chi tiết từng đơn hàng với thông tin user và sản phẩm
+
+### ⚙️ Cài Đặt Người Dùng
+
+1. Truy cập `/html/settings.html`
+2. **Đổi mật khẩu**:
+   - Nhập mật khẩu hiện tại
+   - Nhập mật khẩu mới (tối thiểu 6 ký tự, có chữ hoa, chữ thường, số)
+   - Xác nhận và cập nhật
 
 ---
 
 ## 📂 Cấu Trúc Dự Án
 
 ```
-webbandoannuocuong/
+web-food-drink/
 ├── backend/
 │   ├── config/
 │   │   ├── server.js          # Entry point
-│   │   └── db.js              # MySQL pool
+│   │   └── db.js              # MySQL connection pool
 │   ├── controllers/           # Business logic
-│   │   ├── authController.js
-│   │   ├── productController.js
-│   │   ├── cartController.js
-│   │   ├── orderController.js
-│   │   └── userController.js
+│   │   ├── authController.js       # Register, Login
+│   │   ├── userController.js       # Profile, Avatar, Change Password
+│   │   ├── cartController.js       # Cart operations
+│   │   ├── orderController.js      # Order creation, history
+│   │   └── adminController.js      # Dashboard stats, orders management
 │   ├── routes/                # API endpoints
-│   │   ├── auth.js
-│   │   ├── products.js
-│   │   ├── cart.js
-│   │   ├── orders.js
-│   │   ├── user.js
-│   │   └── admin.js
-│   ├── middleware/            # Auth, Upload
-│   │   ├── auth.js
-│   │   ├── upload.js
-│   │   └── adminAuth.js
-│   ├── .env                   # Environment vars
+│   │   ├── authRoutes.js
+│   │   ├── userRoutes.js
+│   │   ├── productRoutes.js
+│   │   ├── cartRoutes.js
+│   │   ├── orderRoutes.js
+│   │   ├── adminRoutes.js
+│   │   └── setupRoutes.js
+│   ├── middleware/            # Auth, Upload, Admin
+│   │   ├── authMiddleware.js
+│   │   ├── uploadMiddleware.js
+│   │   └── adminMiddleware.js
+│   ├── .env                   # Environment variables
+│   ├── .env.example
+│   ├── Dockerfile
 │   └── package.json
 ├── frontend/
-│   ├── html/                  # Client pages
-│   │   ├── index.html
-│   │   ├── login.html
-│   │   ├── register.html
-│   │   ├── cart.html
-│   │   ├── profile.html
-│   │   └── history.html
+│   ├── html/                  # User pages
+│   │   ├── index.html         # Homepage with products
+│   │   ├── login.html         # User login
+│   │   ├── register.html      # User registration
+│   │   ├── cart.html          # Shopping cart
+│   │   ├── checkout.html      # Checkout page
+│   │   ├── profile.html       # User profile
+│   │   ├── history.html       # Order history
+│   │   ├── settings.html      # User settings
+│   │   └── about.html         # About us
 │   ├── admin/                 # Admin pages
-│   │   ├── index.html
-│   │   ├── login.html
-│   │   ├── products.html
-│   │   └── orders.html
+│   │   ├── index.html         # Dashboard with charts
+│   │   ├── login.html         # Admin login
+│   │   ├── products.html      # Product management
+│   │   └── orders.html        # Order management
 │   ├── css/
-│   │   └── style.css          # Glassmorphism styles
+│   │   ├── style.css          # Main Glassmorphism styles
+│   │   └── auth.css           # Authentication styles
 │   ├── js/
+│   │   ├── config.js          # API configuration
 │   │   ├── api.js             # API wrapper
-│   │   ├── main.js            # Toast, Search
-│   │   ├── auth.js            # Login/Register
-│   │   └── cart.js            # Cart logic
+│   │   ├── main.js            # Toast, Search, Pagination
+│   │   ├── auth.js            # Login/Register logic
+│   │   └── cart.js            # Cart management
 ├── database/
-│   └── init.sql               # Schema + seed data
-├── uploads/                   # Product images & avatars
+│   ├── init.sql               # Database schema + seed data
+│   ├── migrations/            # Database migrations
+│   └── *.sql                  # Additional SQL scripts
+├── uploads/
+│   ├── images/                # Product images
+│   └── avatars/               # User avatars
 ├── docker-compose.yml
 └── README.md
 ```
@@ -199,24 +226,21 @@ webbandoannuocuong/
 ```
 POST /api/auth/register           # Đăng ký
 POST /api/auth/login              # Đăng nhập
-POST /api/auth/google             # Đăng nhập Google OAuth
-POST /api/auth/forgot-password    # Quên mật khẩu (gửi OTP)
-POST /api/auth/reset-password     # Reset mật khẩu với OTP
 ```
 
 ### User
 
 ```
-GET    /api/user/profile          # Lấy thông tin user
-PUT    /api/user/profile          # Cập nhật thông tin user
-POST   /api/user/avatar           # Upload avatar
-GET    /api/user/history          # Lịch sử hoạt động (có phân trang)
+GET    /api/users/profile         # Lấy thông tin user
+PUT    /api/users/profile         # Cập nhật thông tin user
+POST   /api/users/avatar          # Upload avatar
+PUT    /api/users/change-password # Đổi mật khẩu
 ```
 
 ### Products
 
 ```
-GET    /api/products              # Lấy danh sách (có search & pagination)
+GET    /api/products              # Lấy danh sách (có search, category & pagination)
 GET    /api/products/:id          # Lấy chi tiết sản phẩm
 POST   /api/products              # Thêm sản phẩm (Admin)
 PUT    /api/products/:id          # Sửa sản phẩm (Admin)
@@ -238,14 +262,26 @@ DELETE /api/cart/:productId       # Xóa khỏi giỏ
 POST   /api/orders                # Tạo đơn hàng
 GET    /api/orders                # Lấy đơn hàng của user (có phân trang)
 GET    /api/orders/:id            # Chi tiết đơn hàng
+DELETE /api/orders/:orderId       # Xóa đơn hàng
 ```
 
 ### Admin
 
 ```
-GET    /api/admin/orders          # Lấy tất cả đơn hàng (có phân trang)
-PUT    /api/admin/orders/:id      # Cập nhật trạng thái đơn hàng
-GET    /api/admin/stats           # Thống kê doanh thu
+GET    /api/admin/stats                      # Dashboard statistics
+GET    /api/admin/revenue/monthly            # Monthly revenue (12 months)
+GET    /api/admin/revenue/weekly             # Weekly revenue (7 days)
+GET    /api/admin/categories                 # Get all categories
+GET    /api/admin/categories/distribution    # Category distribution
+GET    /api/admin/orders                     # Lấy tất cả đơn hàng (có phân trang)
+PUT    /api/admin/orders/:orderId/status     # Cập nhật trạng thái đơn hàng
+```
+
+### Setup
+
+```
+GET    /api/setup-admin           # Tạo tài khoản admin mặc định
+GET    /api/health                # Kiểm tra kết nối database
 ```
 
 ---
@@ -336,13 +372,19 @@ docker-compose logs db
 
 ### ✅ Đã Hoàn Thành
 
-- [x] Google OAuth integration
-- [x] Email OTP cho reset password
+- [x] JWT Authentication
 - [x] Pagination cho tất cả danh sách
 - [x] Upload avatar
 - [x] Quản lý đơn hàng (Admin)
 - [x] Số thứ tự đơn hàng theo user
-- [x] Lịch sử hoạt động user
+- [x] Real-time search với debounce
+- [x] Category filtering (food/drink)
+- [x] Toast notifications
+- [x] Admin dashboard với biểu đồ
+- [x] Trang About Us
+- [x] Trang Settings với đổi mật khẩu
+- [x] Trang Checkout riêng biệt
+- [x] LocalStorage cart sync
 
 ### 🚧 Đang Phát Triển
 
@@ -350,10 +392,12 @@ docker-compose logs db
 - [ ] Email notifications cho đơn hàng
 - [ ] Order tracking real-time
 - [ ] Product reviews & ratings
-- [ ] Coupon/Discount system
+- [ ] Coupon/Discount system (database schema đã có)
 - [ ] Multi-language support (EN/VI)
 - [ ] Admin analytics dashboard nâng cao
 - [ ] Export reports (PDF/Excel)
+- [ ] Google OAuth integration
+- [ ] Forgot password với OTP
 
 ---
 
@@ -374,8 +418,8 @@ MIT License - Tự do sử dụng cho mục đích học tập và thương mạ
 - [Unsplash](https://unsplash.com/) - Ảnh sản phẩm mẫu
 - [Font Awesome](https://fontawesome.com/) - Icons
 - [Chart.js](https://www.chartjs.org/) - Dashboard charts
-- [Google OAuth](https://developers.google.com/identity) - Authentication
-- [Nodemailer](https://nodemailer.com/) - Email service
+- [Docker](https://www.docker.com/) - Containerization
+- [MySQL](https://www.mysql.com/) - Database
 
 ---
 
