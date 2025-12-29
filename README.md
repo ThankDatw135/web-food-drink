@@ -3,9 +3,8 @@
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue?logo=docker)](https://www.docker.com/)
 [![Node.js](https://img.shields.io/badge/Node.js-18.x-green?logo=node.js)](https://nodejs.org/)
 [![MySQL](https://img.shields.io/badge/MySQL-8.0-orange?logo=mysql)](https://www.mysql.com/)
-[![Firebase](https://img.shields.io/badge/Firebase-Integrated-yellow?logo=firebase)](https://firebase.google.com/)
 
-Website thương mại điện tử F&B hiện đại, bảo mật, chạy trên Docker với thiết kế Glassmorphism và tích hợp Firebase để đồng bộ dữ liệu.
+Website thương mại điện tử F&B hiện đại, bảo mật, chạy trên Docker với thiết kế Glassmorphism.
 
 ![FreshFood Banner](https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80&w=1200&h=400)
 
@@ -252,16 +251,16 @@ DELETE /api/products/:id          # Xóa sản phẩm (Admin)
 ```
 GET    /api/cart                  # Lấy giỏ hàng
 POST   /api/cart                  # Thêm vào giỏ
-PUT    /api/cart/:productId       # Cập nhật số lượng
-DELETE /api/cart/:productId       # Xóa khỏi giỏ
+PUT    /api/cart                  # Cập nhật số lượng (body: cartId, quantity)
+DELETE /api/cart/:id               # Xóa sản phẩm khỏi giỏ
 ```
 
 ### Orders
 
 ```
 POST   /api/orders                # Tạo đơn hàng
-GET    /api/orders                # Lấy đơn hàng của user (có phân trang)
-GET    /api/orders/:id            # Chi tiết đơn hàng
+GET    /api/orders                # Lấy đơn hàng của user
+GET    /api/orders/history        # Lịch sử đơn hàng với phân trang
 DELETE /api/orders/:orderId       # Xóa đơn hàng
 ```
 
@@ -281,7 +280,77 @@ PUT    /api/admin/orders/:orderId/status     # Cập nhật trạng thái đơn 
 
 ```
 GET    /api/setup-admin           # Tạo tài khoản admin mặc định
+GET    /api/migrate-profile       # Migration thêm các cột profile
 GET    /api/health                # Kiểm tra kết nối database
+```
+
+---
+
+## 🗄️ Database Schema
+
+### Tables
+
+**users** - Tài khoản người dùng
+
+```sql
+- id, name, email, password_hash
+- role (user/admin)
+- phone, dob, gender, address
+- avatar_url
+- created_at
+```
+
+**categories** - Danh mục sản phẩm
+
+```sql
+- id, name
+- type (food/drink)
+- image_url, created_at
+```
+
+**products** - Sản phẩm
+
+```sql
+- id, name, description, price
+- image_url, category_id
+- is_available
+- created_at
+```
+
+**carts** - Giỏ hàng
+
+```sql
+- id, user_id, product_id
+- quantity
+- created_at
+- UNIQUE(user_id, product_id)
+```
+
+**orders** - Đơn hàng
+
+```sql
+- id, user_id, user_order_number
+- total_amount
+- status (pending/paid/delivered/cancelled)
+- payment_method (cod/banking)
+- recipient_name, recipient_address, recipient_phone
+- created_at
+```
+
+**order_items** - Chi tiết đơn hàng
+
+```sql
+- id, order_id, product_id
+- quantity, price_at_time
+```
+
+**coupons** - Mã giảm giá (chưa implement)
+
+```sql
+- id, code
+- discount_type (percent/fixed)
+- discount_value, expiry_date
+- created_at
 ```
 
 ---
@@ -403,7 +472,7 @@ docker-compose logs db
 
 ## 👨‍💻 Tác Giả
 
-Phát triển bởi **AI Assistant** với sự hỗ trợ của Google Gemini, Github Copilot, Kiro, và các nguồn mở khác.
+Phát triển bởi **AI Assistant** với sự hỗ trợ của Google Gemini, Antigravity, ChatGPT,  Copilot, Kiro, và các nguồn mở khác.
 
 ---
 
